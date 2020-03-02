@@ -197,6 +197,9 @@ puts "\[sst_expanded\] 0"
 # some comment lines indicating the beginning of a new group ("vvvv")
 # and the end of a group ("^^^^").
 set oldNode -1
+set colorIncr 3
+set colorCounter 3
+set color 4
 foreach node [traverse $tree] {
     # This is broken for corner cases. What you want to do here is to
     # walk up the oldNode until you hit a common parent with the new
@@ -233,9 +236,16 @@ foreach node [traverse $tree] {
         puts "@22"
         push hier [join [absolutePath $tree $node] .]
         set oldNode $node
+	# Cycle through colors starting from green. Allowable color values are
+	# 1 = red, 2 = orange, 3 = yellow, 4 = green, 5 = blue, 6 = indigo,
+	# 7 = violet.
+	if {$colorIncr == -4} {set colorIncr 3} else {set colorIncr -4}
+	set colorCounter [expr [expr $colorCounter + $colorIncr] % 7]
+	set color [expr $colorCounter + 1]
         continue
     }
     # Print the current signal name.
+    puts "\[color\] $color"
     puts "[join [absolutePath $tree $node] .]"
     set oldNode $node
 }
