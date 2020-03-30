@@ -17,3 +17,7 @@ that doesn't diverge at any level (basically a linked list). I then
 merge all these individual trees into one large tree. Finally, I
 traverse the tree and generate group markers whenever I cross a module
 boundary.
+
+## Installing GTKWave on MacOS
+
+See [https://ughe.github.io/2018/11/06/gtkwave-osx](https://ughe.github.io/2018/11/06/gtkwave-osx)

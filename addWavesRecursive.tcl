@@ -124,6 +124,10 @@ proc merge {tree subtree} {
 }
 
 #---------------------------------------- Main addWavesRecursive TCL script
+# print out start marker for awk (kludge needed when using gtkwave with -O flag
+# for output, as on MacOS)
+puts "STARTSTART"
+
 set nfacs [ gtkwave::getNumFacs ]
 set dumpname [ gtkwave::getDumpFileName ]
 set dmt [ gtkwave::getDumpType ]
@@ -245,8 +249,11 @@ foreach node [traverse $tree] {
         continue
     }
     # Print the current signal name.
-    puts "\[color\] $color"
-    puts "[join [absolutePath $tree $node] .]"
+    set signalName "[lindex [absolutePath $tree $node] end]"
+    if {[string match _* $signalName] == 0} {
+        puts "\[color\] $color"
+        puts "[join [absolutePath $tree $node] .]"
+    }
     set oldNode $node
 }
 # We're done, but the stack may still have entries, i.e., there are
@@ -257,6 +264,10 @@ foreach node $hier {
     puts "@22"
     puts "\[*\]^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 }
+
+# print end marker (needed when gtkwave is run with -O flag). See above
+# comment about start marker
+puts "ENDEND"
 
 # We're done, so exit.
 gtkwave::/File/Quit
